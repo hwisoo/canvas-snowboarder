@@ -5,21 +5,20 @@ import boarderImg from './images/boarder.png';
 import bearImg from './images/bear.png';
 
 
-let canvasElement = document.getElementById("canvasElement");
-let ctx = canvasElement.getContext("2d")
+
 
 let playerX = 200;
-let playerY = 325;
+let playerY = 385;
 
 
 let player1Score = 0;
-
+let playerHealth = 100;
 
 let bearX = 800;
 let bearY = 670;
 
-let bearVelocityX = -5;
-let bearVelocityY = -2;
+let bearVelocityX = -7.5;
+let bearVelocityY = -3;
 
 function draw() {
   var canvas = document.getElementById('canvasElement');
@@ -28,20 +27,10 @@ function draw() {
     var playerObj = new Image();
 
     playerObj.onload = function() {
-      // ctx.save();
-      // // move the origin to 50, 35   
-      // ctx.translate(200, 325); 
       
-      // // now move across and down half the 
-      // // width and height of the image (which is 128 x 128)
-      // ctx.translate(80, 80); 
-      
-      // // rotate around this point
-      // ctx.rotate(0.5); 
-      
-      // then draw the image back and up
+   
       ctx.drawImage(playerObj, playerX, playerY);
-      // ctx.restore();
+     
     };playerObj.src = boarderImg;
 
 
@@ -78,7 +67,10 @@ function draw() {
     ctx.fill();
 
     
-   
+    ctx.font = "100px Monospace";
+    ctx.fillText(player1Score, 150, 100); 
+    ctx.fillText(playerHealth, 450, 100); 
+    
    
   }
 }
@@ -87,7 +79,7 @@ function update() {
   bearX = bearX + bearVelocityX;
   bearY = bearY + bearVelocityY;
 
-  if(playerY < 355){
+  if(playerY < 385){
     playerY +=5;
   }
 
@@ -95,15 +87,23 @@ function update() {
   //   circleVelocityY = -circleVelocityY;
   // }
 
-  if (bearX< 0) {
-    bearX = 800;
-    bearY=670;
+  if (bearX < 0) {
+    resetBear();
+    player1Score++;
   }
 
-  // if (circleX > 1000) {
-  //   player1Score++;
-  //   resetBall();
-  // }
+ if(playerY > 370){
+  if (Math.abs((playerX -385)) < 45 || Math.abs((bearY- playerY)) <55) {
+    resetBear();
+    playerHealth -=10;
+  
+  }
+
+  if(playerHealth <= 0){
+    alert("Game Over!, Start again");
+    location.reload();
+  }
+}
 
   // if (circleX < 50 && 150 > Math.abs(circleY - player1Y)) {
   //   circleVelocityX = -circleVelocityX * 1.1;
@@ -119,18 +119,18 @@ document.addEventListener("keydown", playerMove)
 
 function playerMove(event) {
  
-  if (event.keyCode == 38) {
-    playerY = playerY - 250;
+  if (event.keyCode == 38 && playerY == 385) {
+    playerY = playerY - 300;
   }
  
 }
 
-setInterval(draw, 10);
-setInterval(update, 25);
+setInterval(draw, 30);
+setInterval(update, 30);
 
 function resetBear() {
- bearX = 500;
-  bearY = 400;
+ bearX = 800;
+  bearY = 670;
 
 }
 
