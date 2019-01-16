@@ -15,9 +15,9 @@ let rockY = 695;
 let treesX = 750;
 let treesY = 160;
 
-let player1Score = 0;
+let playerScore = 0;
 let playerHealth = 100;
-
+let level = 1;
 
 
 let rockVelocityX = -7.5;
@@ -26,7 +26,7 @@ let rockVelocityY = -3;
 let treesVelocityX = -2;
 let treesVelocityY = -1;
 
-let playerVelocity =5;
+let playerVelocity =8;
 
 
 function draw() {
@@ -86,15 +86,17 @@ function draw() {
     
     ctx.font = "50px Monospace";
     ctx.fillStyle = "white";
-    ctx.fillText("score: "+ player1Score, 70, 650); 
+    ctx.fillText("score: "+ playerScore, 70, 650); 
     ctx.fillText("health: " + playerHealth, 70, 700); 
+    ctx.fillText("level: " + level, 70, 750); 
+
     
   }
 }
 
 function update() {
-  rockX = rockX + rockVelocityX;
-  rockY = rockY + rockVelocityY;
+  rockX = rockX + rockVelocityX * level-.2;
+  rockY = rockY + rockVelocityY * level-.2;
   treesX += treesVelocityX;
   treesY += treesVelocityY;
   
@@ -104,6 +106,9 @@ function update() {
     playerY += playerVelocity;
   }
 
+    if(playerScore%10 ==0){
+      level = playerScore/10 +1;
+    }
   
 
   // if (circleY < 20 || circleY > 800 - 20) {
@@ -112,7 +117,7 @@ function update() {
 
   if (rockX < 0) {
     resetrock();
-    player1Score++;
+    playerScore++;
   }
 
   if (treesX < 0) {
