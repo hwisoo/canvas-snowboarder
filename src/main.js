@@ -2,23 +2,32 @@ import './styles.css';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import boarderImg from './images/boarder.png';
-import bearImg from './images/bear.png';
+import rockImg from './images/rock.png';
+import treesImg from './images/trees.png';
 
 
 
 
 let playerX = 200;
 let playerY = 385;
-
+let rockX = 800;
+let rockY = 695;
+let treesX = 750;
+let treesY = 160;
 
 let player1Score = 0;
 let playerHealth = 100;
 
-let bearX = 800;
-let bearY = 670;
 
-let bearVelocityX = -7.5;
-let bearVelocityY = -3;
+
+let rockVelocityX = -7.5;
+let rockVelocityY = -3;
+
+let treesVelocityX = -2;
+let treesVelocityY = -1;
+
+let playerVelocity =5;
+
 
 function draw() {
   var canvas = document.getElementById('canvasElement');
@@ -36,13 +45,21 @@ function draw() {
 
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    
-    var bearObj = new Image();
-    bearObj.onload = function() {
-    ctx.drawImage(bearObj, bearX, bearY);
+    var treesObj = new Image();
+    treesObj.onload = function() {
+    ctx.drawImage(treesObj, treesX, treesY);
     };
-    bearObj.src = bearImg;
+    treesObj.src = treesImg;
+  
+    
+    var rockObj = new Image();
+    rockObj.onload = function() {
+    ctx.drawImage(rockObj, rockX, rockY);
+    };
+    rockObj.src = rockImg;
+
+    
+   
 
     ctx.save();
     ctx.fill();
@@ -67,34 +84,44 @@ function draw() {
     ctx.fill();
 
     
-    ctx.font = "100px Monospace";
-    ctx.fillText(player1Score, 150, 100); 
-    ctx.fillText(playerHealth, 450, 100); 
+    ctx.font = "50px Monospace";
+    ctx.fillStyle = "white";
+    ctx.fillText("score: "+ player1Score, 70, 650); 
+    ctx.fillText("health: " + playerHealth, 70, 700); 
     
-   
   }
 }
 
 function update() {
-  bearX = bearX + bearVelocityX;
-  bearY = bearY + bearVelocityY;
+  rockX = rockX + rockVelocityX;
+  rockY = rockY + rockVelocityY;
+  treesX += treesVelocityX;
+  treesY += treesVelocityY;
+  
 
-  if(playerY < 385){
-    playerY +=5;
+  if(playerY < 385 ){
+    
+    playerY += playerVelocity;
   }
+
+  
 
   // if (circleY < 20 || circleY > 800 - 20) {
   //   circleVelocityY = -circleVelocityY;
   // }
 
-  if (bearX < 0) {
-    resetBear();
+  if (rockX < 0) {
+    resetrock();
     player1Score++;
   }
 
+  if (treesX < 0) {
+    resetTrees();
+  }
+
  if(playerY > 370){
-  if (Math.abs((playerX -385)) < 45 || Math.abs((bearY- playerY)) <55) {
-    resetBear();
+  if (Math.abs((playerX -rockX)) < 45 ) {
+    resetrock();
     playerHealth -=10;
   
   }
@@ -105,22 +132,17 @@ function update() {
   }
 }
 
-  // if (circleX < 50 && 150 > Math.abs(circleY - player1Y)) {
-  //   circleVelocityX = -circleVelocityX * 1.1;
-  // }
 
-  // if (circleX > 950 && 150 > Math.abs(circleY - player2Y)) {
-  //   circleVelocityX = -circleVelocityX * 1.1;
-  // }
 }
 
 
-document.addEventListener("keydown", playerMove)
+document.addEventListener("keydown", playerMove);
 
 function playerMove(event) {
  
   if (event.keyCode == 38 && playerY == 385) {
-    playerY = playerY - 300;
+    playerY -= 200;
+
   }
  
 }
@@ -128,10 +150,14 @@ function playerMove(event) {
 setInterval(draw, 30);
 setInterval(update, 30);
 
-function resetBear() {
- bearX = 800;
-  bearY = 670;
+function resetrock() {
+ rockX = 800;
+  rockY = 695;
+}
 
+function resetTrees(){
+  treesX = 650;
+  treesY = 160;
 }
 
 
